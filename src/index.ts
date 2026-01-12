@@ -6,13 +6,12 @@ export default {
   async fetch(request: Request, env: Env): Promise<Response> {
     const url = new URL(request.url);
 
-    // CORS headers
     const corsHeaders = {
       "Access-Control-Allow-Origin": "*",
       "Access-Control-Allow-Headers": "Content-Type",
     };
 
-    // Handle preflight
+    // Preflight support
     if (request.method === "OPTIONS") {
       return new Response(null, { headers: corsHeaders });
     }
@@ -21,7 +20,7 @@ export default {
       return new Response("Method Not Allowed", { status: 405 });
     }
 
-    // CONTACT FORM
+    // CONTACT API
     if (url.pathname === "/api/contact") {
       const data = await request.json();
 
@@ -44,7 +43,7 @@ export default {
       );
     }
 
-    // BOOKING FORM
+    // BOOKING API
     if (url.pathname === "/api/book") {
       const data = await request.json();
 
