@@ -1,0 +1,16 @@
+{
+	"compatibility_date": "2025-10-08",
+	"main": "src/index.ts",
+	"name": "eyenex-backend",
+	"upload_source_maps": true,
+	"d1_databases": [
+		{
+			"binding": "DB",
+			"database_id": "4f1be93f-a9cc-473c-b061-cc99b24bb779",
+			"database_name": "eyenex_db"
+		}
+	],
+	"observability": {
+		"enabled": true
+	}
+}
