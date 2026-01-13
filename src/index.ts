@@ -2,25 +2,33 @@ export interface Env {
   DB: D1Database;
 }
 
+const corsHeaders = {
+  "Access-Control-Allow-Origin": "https://eyenex.com.np",
+  "Access-Control-Allow-Methods": "POST, OPTIONS",
+  "Access-Control-Allow-Headers": "Content-Type",
+};
+
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {
     const url = new URL(request.url);
 
-    const corsHeaders = {
-      "Access-Control-Allow-Origin": "*",
-      "Access-Control-Allow-Headers": "Content-Type",
-    };
-
-    // Preflight support
+    // ✅ Preflight support
     if (request.method === "OPTIONS") {
-      return new Response(null, { headers: corsHeaders });
+      return new Response(null, {
+        status: 204,
+        headers: corsHeaders,
+      });
     }
 
+    // ❌ Only POST allowed
     if (request.method !== "POST") {
-      return new Response("Method Not Allowed", { status: 405 });
+      return new Response("Method Not Allowed", {
+        status: 405,
+        headers: corsHeaders,
+      });
     }
 
-    // CONTACT API
+    // 📩 CONTACT API
     if (url.pathname === "/api/contact") {
       const data = await request.json();
 
@@ -39,11 +47,16 @@ export default {
 
       return new Response(
         JSON.stringify({ success: true }),
-        { headers: corsHeaders }
+        {
+          headers: {
+            ...corsHeaders,
+            "Content-Type": "application/json",
+          },
+        }
       );
     }
 
-    // BOOKING API
+    // 📅 BOOKING API
     if (url.pathname === "/api/book") {
       const data = await request.json();
 
@@ -66,10 +79,18 @@ export default {
 
       return new Response(
         JSON.stringify({ success: true }),
-        { headers: corsHeaders }
+        {
+          headers: {
+            ...corsHeaders,
+            "Content-Type": "application/json",
+          },
+        }
       );
     }
 
-    return new Response("Not Found", { status: 404 });
+    return new Response("Not Found", {
+      status: 404,
+      headers: corsHeaders,
+    });
   },
 };
